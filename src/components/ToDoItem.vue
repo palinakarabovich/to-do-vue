@@ -3,12 +3,16 @@
     <span
       v-bind:class="{done: todo.completed}"
     >
-      <input type="checkbox" />
-      <strong>{{ todo.id }}</strong>
+      <input
+      type="checkbox"
+      @change="todo.completed = !todo.completed"
+      />
+      <strong>{{ index + 1 }} </strong>
       {{ todo.title }}
     </span>
     <button
       class='button_remove'
+      @click="$emit('remove-todo', todo.id)"
     >
       &times;
   </button>
@@ -17,7 +21,7 @@
 
 <script>
 export default{
-  props: ['todo']
+  props: ['todo', 'index']
 }
 </script>
 
@@ -31,8 +35,10 @@ li{
   border-radius: 5px;
 }
 
-input{
-  margin-right: 10px;
+span{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .button_remove{
@@ -42,6 +48,8 @@ input{
   color: #fff;
   font-weight: 900;
   cursor: pointer;
+  width: 30px;
+  height: 30px;
 }
 
 .done{

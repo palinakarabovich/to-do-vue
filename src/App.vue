@@ -1,28 +1,43 @@
 <template>
   <h1>To do application</h1>
   <hr />
+  <Form 
+    @add-todo="addToDo"
+  />
   <ToDoList
     v-bind:todos="todos"
+    @remove-todo="removeToDo"
   />
 </template>
 
 <script>
 import ToDoList from '@/components/ToDoList.vue'
+import Form from '@/components/Form.vue'
 
 export default {
   name: 'App',
   components: {
-    ToDoList
+    ToDoList,
+    Form
   },
   data() {
     return {
-      todos: [
-        { id: 1, title: 'Buy milk', completed: false },
-        { id: 2, title: 'Create app', completed: false },
-        { id: 3, title: 'Cook dinner', completed: false }
-      ]
+      todos: []
     }
   },
+  mounted(){
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
+      .then(response => response.json())
+      .then(json => this.todos = json)
+  },
+  methods: {
+    removeToDo(id) {
+      this.todos = this.todos.filter((td) => td.id !== id)
+    },
+    addToDo(todo){
+      this.todos.push(todo);
+    }
+  }
 }
 </script>
 
